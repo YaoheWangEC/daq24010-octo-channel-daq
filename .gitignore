@@ -50,3 +50,20 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Keil MDK-ARM
+objects/
+listings/
+*.axf
+*.crf
+*.dep
+*.lnp
+*.sct
+*.lst
+*.uvoptx
+*.uvguix.*
+*.bak
+.vscode/
+keil-build-viewer*
+EventRecorderStub.scvd
+!keil-build-viewer.exe

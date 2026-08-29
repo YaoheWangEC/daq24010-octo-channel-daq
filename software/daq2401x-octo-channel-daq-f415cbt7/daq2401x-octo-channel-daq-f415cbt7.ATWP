@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <WorkBenchVersion>
+        <Version>V1.2.04</Version>
+    </WorkBenchVersion>
+    <MCUInfo>
+        <MCUSerials>AT32F415</MCUSerials>
+        <MCUName>AT32F415CBT7</MCUName>
+        <MCUPackage>LQFP48</MCUPackage>
+    </MCUInfo>
+    <ADC1>
+        <Mode>
+            <ModeSub name="IN4" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="RepeatMode" value="TRUE"/>
+            <ParametersSub name="OrdinaryTriggerSource" value="ADC12_ORDINARY_TRIG_SOFTWARE"/>
+            <ParametersSub name="Channel_OrdinarySequence_1" value="ADC_CHANNEL_4"/>
+            <ParametersSub name="SamplingTime_OrdinarySequence_1" value="ADC_SAMPLETIME_239_5"/>
+            <ParametersSub name="SamplingRate_OrdinarySequence_1" value="0.060"/>
+        </Parameters>
+    </ADC1>
+    <CRM>
+        <Mode>
+            <ModeSub name="HEXT" value="HEXT-External-Oscillator"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="HEXT" value="HEXT_CRYSTAL"/>
+        </Parameters>
+    </CRM>
+    <DEBUG>
+        <Mode>
+            <ModeSub name="Debug interface" value="SWD"/>
+        </Mode>
+    </DEBUG>
+    <I2C2>
+        <Mode>
+            <ModeSub name="I2C" value="I2C"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="DualAddressMode" value="DISABLE"/>
+            <ParametersSub name="GeneralCallMode" value="FALSE"/>
+        </Parameters>
+    </I2C2>
+    <SPI1>
+        <Mode>
+            <ModeSub name="Mode" value="Full_Duplex_Master"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="TransmissionMode" value="SPI_TRANSMIT_FULL_DUPLEX"/>
+            <ParametersSub name="Mode" value="SPI_MODE_MASTER"/>
+            <ParametersSub name="DataSize" value="SPI_FRAME_16BIT"/>
+            <ParametersSub name="FirstBit" value="SPI_FIRST_BIT_MSB"/>
+            <ParametersSub name="ClkDivision" value="SPI_MCLK_DIV_16"/>
+            <ParametersSub name="ClockFrequency" value="3750000"/>
+            <ParametersSub name="CLKPolarity" value="SPI_CLOCK_POLARITY_HIGH"/>
+            <ParametersSub name="CLKPhase" value="SPI_CLOCK_PHASE_2EDGE"/>
+        </Parameters>
+    </SPI1>
+    <SPI2>
+        <Mode>
+            <ModeSub name="Mode" value="TX_Only_Simplex_Unidirect_Master"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="TransmissionMode" value="SPI_TRANSMIT_FULL_DUPLEX"/>
+            <ParametersSub name="Mode" value="SPI_MODE_MASTER"/>
+            <ParametersSub name="FirstBit" value="SPI_FIRST_BIT_MSB"/>
+            <ParametersSub name="ClockFrequency" value="15000000"/>
+        </Parameters>
+    </SPI2>
+    <SYSTEM>
+        <Mode>
+            <ModeSub name="Time_Base" value="SysTick"/>
+            <ModeSub name="UART_Printf" value="USART1"/>
+        </Mode>
+    </SYSTEM>
+    <TMR3>
+        <Mode>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="Period" value="999"/>
+        </Parameters>
+    </TMR3>
+    <TMR11>
+        <Mode>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="DividerValue" value="119"/>
+            <ParametersSub name="Period" value="999"/>
+        </Parameters>
+        <Interrupts>
+            <InterruptsSub name="Interrupt_OVFIF" value="TRUE"/>
+        </Interrupts>
+    </TMR11>
+    <USART1>
+        <Mode>
+            <ModeSub name="Mode" value="Asynchronous_TransmitOnly"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="VirtualMode" value="VM_ASYNC_T"/>
+            <ParametersSub name="RealBaudRate" value="115163"/>
+        </Parameters>
+    </USART1>
+    <USART2>
+        <Mode>
+            <ModeSub name="Mode" value="Asynchronous"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="RealBaudRate" value="115163"/>
+        </Parameters>
+    </USART2>
+    <WDT>
+        <Mode>
+            <ModeSub name="WDT_State" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="Prescaler" value="WDT_CLK_DIV_32"/>
+        </Parameters>
+    </WDT>
+    <I2C_Application>
+        <Mode>
+            <ModeSub name="I2C2_Mode" value="Poll_Mode"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="I2C2_Communication_Mode" value="EEPROM"/>
+        </Parameters>
+    </I2C_Application>
+    <DMA>
+        <ADC1>
+            <ParametersSub name="Instance" value="DMA1_Channel6"/>
+            <ParametersSub name="Mode" value="FALSE"/>
+        </ADC1>
+        <SPI1_RX>
+            <ParametersSub name="Instance" value="DMA1_Channel3"/>
+            <ParametersSub name="PeriphDataAlignment" value="DMA_PERIPHERAL_DATA_WIDTH_HALFWORD"/>
+            <ParametersSub name="MemDataAlignment" value="DMA_MEMORY_DATA_WIDTH_HALFWORD"/>
+            <ParametersSub name="Mode" value="TRUE"/>
+            <ParametersSub name="Priority" value="DMA_PRIORITY_HIGH"/>
+            <ParametersSub name="Interrupt_FDT" value="ENABLE"/>
+            <ParametersSub name="Interrupt_HDT" value="ENABLE"/>
+        </SPI1_RX>
+        <SPI2_TX>
+            <ParametersSub name="Instance" value="DMA1_Channel5"/>
+        </SPI2_TX>
+        <USART2_RX>
+            <ParametersSub name="Instance" value="DMA1_Channel1"/>
+        </USART2_RX>
+        <USART2_TX>
+            <ParametersSub name="Instance" value="DMA1_Channel2"/>
+        </USART2_TX>
+        <TMR3_OVERFLOW>
+            <ParametersSub name="Instance" value="DMA1_Channel4"/>
+            <ParametersSub name="Direction" value="DMA_DIR_MEMORY_TO_PERIPHERAL"/>
+            <ParametersSub name="PeriphDataAlignment" value="DMA_PERIPHERAL_DATA_WIDTH_HALFWORD"/>
+            <ParametersSub name="MemDataAlignment" value="DMA_MEMORY_DATA_WIDTH_HALFWORD"/>
+            <ParametersSub name="Mode" value="TRUE"/>
+            <ParametersSub name="Priority" value="DMA_PRIORITY_VERY_HIGH"/>
+            <ParametersSub name="Interrupt_FDT" value="ENABLE"/>
+            <ParametersSub name="Interrupt_HDT" value="ENABLE"/>
+        </TMR3_OVERFLOW>
+    </DMA>
+    <NVIC>
+        <ShowType>1</ShowType>
+        <SysTick_Handler>1;15;0;0;0;1</SysTick_Handler>
+        <FLASH_IRQHandler>0;0;0;0;0;0</FLASH_IRQHandler>
+        <CRM_IRQHandler>0;0;0;0;0;0</CRM_IRQHandler>
+        <DMA1_Channel1_IRQHandler>0;0;0;0;0;0</DMA1_Channel1_IRQHandler>
+        <DMA1_Channel2_IRQHandler>1;3;0;0;0;1</DMA1_Channel2_IRQHandler>
+        <DMA1_Channel3_IRQHandler>1;0;0;0;0;1</DMA1_Channel3_IRQHandler>
+        <DMA1_Channel4_IRQHandler>1;1;0;0;0;1</DMA1_Channel4_IRQHandler>
+        <DMA1_Channel5_IRQHandler>0;0;0;0;0;0</DMA1_Channel5_IRQHandler>
+        <DMA1_Channel6_IRQHandler>0;0;0;0;0;0</DMA1_Channel6_IRQHandler>
+        <ADC1_IRQHandler>0;0;0;0;0;0</ADC1_IRQHandler>
+        <TMR1_TRG_HALL_TMR11_IRQHandler>1;2;0;0;0;1</TMR1_TRG_HALL_TMR11_IRQHandler>
+        <TMR3_GLOBAL_IRQHandler>0;0;0;0;0;0</TMR3_GLOBAL_IRQHandler>
+        <I2C2_EVT_IRQHandler>0;0;0;0;0;0</I2C2_EVT_IRQHandler>
+        <I2C2_ERR_IRQHandler>0;0;0;0;0;0</I2C2_ERR_IRQHandler>
+        <SPI1_IRQHandler>0;0;0;0;0;0</SPI1_IRQHandler>
+        <SPI2_IRQHandler>0;0;0;0;0;0</SPI2_IRQHandler>
+        <USART1_IRQHandler>0;0;0;0;0;0</USART1_IRQHandler>
+        <USART2_IRQHandler>1;3;0;0;0;1</USART2_IRQHandler>
+    </NVIC>
+    <GPIO>
+        <ShowType>1</ShowType>
+        <Signal SignalName="GPIO_Output" PinName="PC13">
+            <Parameters name="GPIO_Outputlevel" value="GPIO_OUTPUTLEVEL_HIGH"/>
+            <Parameters name="Label" value="LED_RED"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PC14/LEXT_IN">
+            <Parameters name="GPIO_Outputlevel" value="GPIO_OUTPUTLEVEL_HIGH"/>
+            <Parameters name="Label" value="LED_GREEN"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PC15/LEXT_OUT">
+            <Parameters name="GPIO_Outputlevel" value="GPIO_OUTPUTLEVEL_HIGH"/>
+            <Parameters name="Label" value="LED_BLUE"/>
+        </Signal>
+        <Signal SignalName="GPIO_Input" PinName="PA0/WKUP">
+            <Parameters name="GPIO_PullType_Set" value="GPIO_PULL_UP"/>
+            <Parameters name="Label" value="KEY"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA1">
+            <Parameters name="Label" value="RS485_DE"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB0">
+            <Parameters name="Label" value="ADC_NSS"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB12">
+            <Parameters name="Label" value="LED_CH8"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB13">
+            <Parameters name="Label" value="LED_CH7"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB14">
+            <Parameters name="Label" value="LED_CH6"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB15">
+            <Parameters name="Label" value="LED_CH5"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA8">
+            <Parameters name="Label" value="LED_CH4"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA9">
+            <Parameters name="Label" value="LED_CH3"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA10">
+            <Parameters name="Label" value="LED_CH2"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA11">
+            <Parameters name="Label" value="LED_CH1"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PA15">
+            <Parameters name="Label" value="LCD_RESET"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB4">
+            <Parameters name="Label" value="LCD_DC"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB7">
+            <Parameters name="Label" value="LCD_CS"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB9">
+            <Parameters name="GPIO_Outputlevel" value="GPIO_OUTPUTLEVEL_HIGH"/>
+            <Parameters name="Label" value="NRST_CON"/>
+        </Signal>
+    </GPIO>
+    <ClockConfiguration>
+        <rtcsel>0</rtcsel>
+        <hext>24.000000</hext>
+        <pllhextdiv>0</pllhextdiv>
+        <pllrcs>0</pllrcs>
+        <pllmode>0</pllmode>
+        <pllmult>5</pllmult>
+        <pllms>1</pllms>
+        <pllns>72</pllns>
+        <pllfr>4</pllfr>
+        <sclkselect>1</sclkselect>
+        <ahbdiv>1</ahbdiv>
+        <apb1div>2</apb1div>
+        <apb2div>2</apb2div>
+        <usbdiv>3.0</usbdiv>
+        <hicktosclk>0</hicktosclk>
+        <clkout>0</clkout>
+        <clkoutdiv>1</clkoutdiv>
+        <adcdiv>4</adcdiv>
+        <systicsel>8</systicsel>
+    </ClockConfiguration>
+    <PINInfo>
+        <PinSub pinname="PC13" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PC14/LEXT_IN" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PC15/LEXT_OUT" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PD0/HEXT_IN" signalname="CRM_HEXT_IN" signaltype="2"/>
+        <PinSub pinname="PD1/HEXT_OUT" signalname="CRM_HEXT_OUT" signaltype="2"/>
+        <PinSub pinname="PA0/WKUP" signalname="GPIO_Input" signaltype="3"/>
+        <PinSub pinname="PA1" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA2" signalname="USART2_TX" signaltype="2"/>
+        <PinSub pinname="PA3" signalname="USART2_RX" signaltype="2"/>
+        <PinSub pinname="PA4" signalname="ADC1_IN4" signaltype="2"/>
+        <PinSub pinname="PA5" signalname="SPI1_SCK" signaltype="2"/>
+        <PinSub pinname="PA6" signalname="SPI1_MISO" signaltype="2"/>
+        <PinSub pinname="PA7" signalname="SPI1_MOSI" signaltype="2"/>
+        <PinSub pinname="PB0" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB10" signalname="I2C2_SCL" signaltype="3"/>
+        <PinSub pinname="PB11" signalname="I2C2_SDA" signaltype="2"/>
+        <PinSub pinname="PB12" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB13" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB14" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB15" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA8" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA9" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA10" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA11" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA13" signalname="DEBUG_JTMS_SWDIO" signaltype="2"/>
+        <PinSub pinname="PA14" signalname="DEBUG_JTCK_SWCLK" signaltype="2"/>
+        <PinSub pinname="PA15" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB3" signalname="SPI2_SCK" signaltype="2"/>
+        <PinSub pinname="PB4" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB5" signalname="SPI2_MOSI" signaltype="2"/>
+        <PinSub pinname="PB6" signalname="USART1_TX" signaltype="2"/>
+        <PinSub pinname="PB7" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PB9" signalname="GPIO_Output" signaltype="3"/>
+    </PINInfo>
+    <ProjectInfomation>
+        <ProjectName>daq2401x-octo-channel-daq-f415cbt7</ProjectName>
+        <ProjectLocation>D:/EE_Project/项目/DAQ系列/DAQ2401x 8通道通用采集卡</ProjectLocation>
+        <ToolchainIDE>MDK_V5</ToolchainIDE>
+        <ARMCompiler>0</ARMCompiler>
+        <BackupCode>true</BackupCode>
+        <KeepUserCode>true</KeepUserCode>
+        <NotUsedPinAnalog>false</NotUsedPinAnalog>
+        <CodeSplitIP>true</CodeSplitIP>
+        <AddNecessaryFileFlag>true</AddNecessaryFileFlag>
+        <DeletePriviousFiles>true</DeletePriviousFiles>
+        <MinHeapSize>0x200</MinHeapSize>
+        <MinStackSize>0x400</MinStackSize>
+        <UseFirmware>true</UseFirmware>
+        <PackageVersion>V2.1.8</PackageVersion>
+    </ProjectInfomation>
+    <FunctionRankInfo>
+        <RankSub RankNum="1" FixPosFlag="TRUE" FuncName="wk_system_clock_config" InstanceName="CRM" CodeSection="config_system_clock_rtthread" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="2" FixPosFlag="TRUE" FuncName="wk_periph_clock_config" InstanceName="CRM" CodeSection="config periph clock" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="4" FixPosFlag="TRUE" FuncName="wk_debug_config" InstanceName="DEBUG" CodeSection="debug function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="7" FixPosFlag="TRUE" FuncName="wk_nvic_config" InstanceName="NVIC" CodeSection="config nvic" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="8" FixPosFlag="TRUE" FuncName="wk_timebase_init" InstanceName="SYSTEM" CodeSection="config timebase" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="9" FixPosFlag="TRUE" FuncName="wk_gpio_config" InstanceName="GPIO" CodeSection="gpio function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="10" FixPosFlag="FALSE" FuncName="wk_adc1_init" InstanceName="ADC1" CodeSection="adc1 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="11" FixPosFlag="FALSE" FuncName="wk_dma1_channel1_init" InstanceName="DMA1_Channel1" CodeSection="dma1_channel1_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="12" FixPosFlag="FALSE" FuncName="wk_dma1_channel2_init" InstanceName="DMA1_Channel2" CodeSection="dma1_channel2_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="13" FixPosFlag="FALSE" FuncName="wk_dma1_channel3_init" InstanceName="DMA1_Channel3" CodeSection="dma1_channel3_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="14" FixPosFlag="FALSE" FuncName="wk_dma1_channel4_init" InstanceName="DMA1_Channel4" CodeSection="dma1_channel4_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="25" FixPosFlag="FALSE" FuncName="wk_usart1_init" InstanceName="USART1" CodeSection="usart1 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="26" FixPosFlag="FALSE" FuncName="wk_usart2_init" InstanceName="USART2" CodeSection="usart2 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="30" FixPosFlag="FALSE" FuncName="wk_spi1_init" InstanceName="SPI1" CodeSection="spi1 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="31" FixPosFlag="FALSE" FuncName="wk_spi2_init" InstanceName="SPI2" CodeSection="spi2 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="35" FixPosFlag="FALSE" FuncName="wk_i2c2_init" InstanceName="I2C2" CodeSection="i2c2 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="43" FixPosFlag="FALSE" FuncName="wk_tmr3_init" InstanceName="TMR3" CodeSection="tmr3 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="56" FixPosFlag="FALSE" FuncName="wk_i2c_app_init" InstanceName="I2C_Application" CodeSection="i2c_app_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="48" FixPosFlag="FALSE" FuncName="wk_tmr11_init" InstanceName="TMR11" CodeSection="tmr11 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="15" FixPosFlag="FALSE" FuncName="wk_dma1_channel5_init" InstanceName="DMA1_Channel5" CodeSection="dma1_channel5_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="16" FixPosFlag="FALSE" FuncName="wk_dma1_channel6_init" InstanceName="DMA1_Channel6" CodeSection="dma1_channel6_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="52" FixPosFlag="FALSE" FuncName="wk_wdt_init" InstanceName="WDT" CodeSection="wdt function" MainDoNotCallFlag="FALSE"/>
+    </FunctionRankInfo>
+</Root>
