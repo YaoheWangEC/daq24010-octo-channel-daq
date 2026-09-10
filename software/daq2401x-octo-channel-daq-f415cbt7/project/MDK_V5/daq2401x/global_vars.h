@@ -74,15 +74,15 @@ typedef enum
 typedef struct 
 {
     uint32_t uid[3];    /**< 器件 UID */
-    uint32_t tick;      /**< 1ms tick */
+    volatile uint32_t tick;      /**< 1ms tick */
 
     adc_logic_channel_t logic_channel;                  /**< 当前选择的片外 ADC 逻辑通道 */
     adc_raw_samplerate_t raw_samplerate;                /**< 片外 ADC 的真实采样率 */
     adc_decimated_samplerate_t decimated_samplerate;    /**< 降采样目标输出采样率 */
-    adc_trigger_mode_t trigger_mode;                    /**< 触发方式（软件/电平/斜率×上升/下降沿） */
-    int16_t trigger_threshold;                          /**< 触发阈值（电平或斜率，0~4095） */
-    adc_acq_state_t acq_state;                          /**< 采集状态（空闲/等待触发/采集中） */
-    float avdd;                                         /**< 当前片外 ADC 的满量程电压 */
+    volatile adc_trigger_mode_t trigger_mode;           /**< 触发方式（软件/电平/斜率×上升/下降沿） */
+    volatile int16_t trigger_threshold;                 /**< 触发阈值（电平或斜率，0~4095） */
+    volatile adc_acq_state_t acq_state;                 /**< 采集状态（空闲/等待触发/采集中） */
+    volatile float avdd;                                /**< 当前片外 ADC 的满量程电压 */
 
     uint16_t adc_dma_tx_buf[ADC_DMA_BUF_LEN];           /**< 片外 ADC DMA TX 缓冲区 */
     uint16_t adc_dma_rx_buf[ADC_DMA_BUF_LEN];           /**< 片外 ADC DMA RX 缓冲区*/

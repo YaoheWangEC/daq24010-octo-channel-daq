@@ -33,12 +33,12 @@ void wk_delay_ms(uint32_t delay)
 #define ADC_STARTUP_DISCARD_SAMPLES 100
 
 // 降采样内部状态
-static uint16_t decimate_factor = 1;      // 降采样因子 N = 原始速率/目标速率
-static uint32_t decimate_accumulator;     // 平均累加器
-static uint16_t decimate_count;           // 已累积原始样本数
+static volatile uint16_t decimate_factor = 1;      // 降采样因子 N = 原始速率/目标速率
+static volatile uint32_t decimate_accumulator;     // 平均累加器
+static volatile uint16_t decimate_count;           // 已累积原始样本数
 
 // 触发比较基准：<0 时为丢弃倒计数（每次收到输出样本 +1）；≥0 时为上一降采样样本
-static int16_t trigger_prev = -ADC_STARTUP_DISCARD_SAMPLES;
+static volatile int16_t trigger_prev = -ADC_STARTUP_DISCARD_SAMPLES;
 
 // VREF 反推 AVDD：片内 ADC1 连续转换 + DMA1_CH6 采集 TL431 基准（2.495V）
 #define VREF_DMA_SAMPLES 64

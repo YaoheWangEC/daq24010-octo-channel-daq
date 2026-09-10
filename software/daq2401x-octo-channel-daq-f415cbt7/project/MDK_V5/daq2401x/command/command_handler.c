@@ -593,10 +593,16 @@ char* adc_handler(int argc, char **argv)
         }
 
         // 逐样本弹出，4 hex 字符紧凑输出；不足则发出已有数据
+        // 先按响应缓冲容量收敛上限，保证弹出的样本一定被写出（每样本 4 字符）
+        long max_n = (long)((sizeof(resp) - 4) / 4);
+        if (want > max_n)
+        {
+            want = max_n;
+        }
+
         int off = 0;
         uint16_t sample;
-        while ((want-- > 0) && ringbuf_pop(&g_vars.adc_ring, &sample)
-               && off < (int)sizeof(resp) - 4)
+        while ((want-- > 0) && ringbuf_pop(&g_vars.adc_ring, &sample))
         {
             off += snprintf(resp + off, sizeof(resp) - (size_t)off, "%04X",
                             (unsigned)sample);
