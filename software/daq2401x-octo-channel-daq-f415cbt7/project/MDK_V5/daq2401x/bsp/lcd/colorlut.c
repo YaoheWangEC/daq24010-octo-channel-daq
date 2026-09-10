@@ -27,7 +27,7 @@ static size_t colorlut_count = 0;
  * 如果数量超过最大支持值，则自动截断。
  *
  * @param colors RGB565颜色数组
- * @param count  调色板颜色数量 (最大16或256)
+ * @param count  调色板颜色数量 (最大16或256；16 已实测，256 未验证)
  */
 void colorlut_init(const uint16_t *colors, size_t count)
 {
@@ -128,7 +128,7 @@ void colorlut_clear_buffer(uint8_t *buf, size_t width, size_t height, uint8_t co
 void colorlut_set_pixel(uint8_t *buf, size_t x, size_t y, uint8_t color_index)
 {
 #if COLORLUT_MAX_COLORS <= 16
-    size_t pixel_index = y * COLORLUT_AREA_WIDTH + x; // 假设屏幕宽度宏已定义
+    size_t pixel_index = y * COLORLUT_AREA_WIDTH + x; // 行距 = COLORLUT_AREA_WIDTH（缓冲宽度）
     size_t byte_index = pixel_index / 2;
     if ((pixel_index & 1) == 0)
     {
@@ -316,17 +316,19 @@ void colorlut_show_string(uint8_t *buf, uint16_t x, uint16_t y, const uint8_t *s
 /**
  * @brief 将索引缓冲区内容刷新到LCD显示器
  *
- * 本函数支持局部区域刷新。它会将指定区域的索引缓冲区内容展开为RGB565数据，
- * 并通过SPI DMA传输到LCD。为了避免一次性占用过多内存，数据按行或列逐次传输。
+ * 本函数把一块"自包含"的索引缓冲区贴到 LCD 的指定位置。
+ * 缓冲区采用自身局部坐标（原点为缓冲左上角，行距 = COLORLUT_AREA_WIDTH），
+ * x_start/y_start 仅表示该区域贴在屏幕上的目标位置，不参与缓冲寻址。
+ * 因此缓冲宽度无须等于屏宽，可为任意的局部区域缓冲。
  *
- * @param src     索引缓冲区指针（对应刷新区域的索引数据，原点为0,0）
- * @param x_start 刷新区域在屏幕的起始X坐标
- * @param y_start 刷新区域在屏幕的起始Y坐标
- * @param width   刷新区域的宽度（像素数）
- * @param height  刷新区域的高度（像素数）
+ * @param src     索引缓冲区指针（内容按缓冲局部坐标绘制，原点为缓冲左上角）
+ * @param x_start 该区域在屏幕上的目标起始X坐标
+ * @param y_start 该区域在屏幕上的目标起始Y坐标
+ * @param width   该区域的宽度（像素数，<= COLORLUT_AREA_WIDTH）
+ * @param height  该区域的高度（像素数）
  *
  * @note 使用前需确保LCD已初始化，并且SPI DMA可用。
- *       如果需要全屏刷新，可传入 (0,0,LCD_W,LCD_H)。
+ *       全屏整刷可传 (0,0,LCD_W,LCD_H)（此时缓冲即整屏，局部坐标=屏幕坐标）。
  */
 void colorlut_flush_to_lcd(const uint8_t *src,
     size_t x_start,
@@ -356,11 +358,11 @@ void colorlut_flush_to_lcd(const uint8_t *src,
             while(lcdio_interface_is_free() == false);
         }
 
-        // 展开一行数据到缓冲区，保证逐行逐像素顺序
+        // 展开一行数据到缓冲区，保证逐行逐像素顺序（按缓冲内局部坐标读）
         uint16_t buf_index = 0;
         for (size_t x = 0; x < width; x++)
         {
-            uint8_t color_index = colorlut_get_pixel(src, x_start + x, y_start + y);
+            uint8_t color_index = colorlut_get_pixel(src, x, y);
             uint16_t color = colorlut_get_color(color_index);
             spi_buf[buf_index] = (color >> 8) | (color << 8); // 高低字节交换
             buf_index++;
@@ -381,11 +383,11 @@ void colorlut_flush_to_lcd(const uint8_t *src,
  * 返回非 0 表示刷屏进行中（本次入参被忽略，仅推进当前帧）。
  * 适用于主循环周期驱动，避免长时间阻塞。
  *
- * @param src     索引缓冲区指针（对应刷新区域的索引数据，原点为0,0）
- * @param x_start 刷新区域在屏幕的起始X坐标
- * @param y_start 刷新区域在屏幕的起始Y坐标
- * @param width   刷新区域的宽度（像素数）
- * @param height  刷新区域的高度（像素数）
+ * @param src     索引缓冲区指针（内容按缓冲局部坐标绘制，原点为缓冲左上角）
+ * @param x_start 该区域在屏幕上的目标起始X坐标
+ * @param y_start 该区域在屏幕上的目标起始Y坐标
+ * @param width   该区域的宽度（像素数，<= COLORLUT_AREA_WIDTH）
+ * @param height  该区域的高度（像素数）
  * @retval 0=空闲可接收新帧；非0=刷屏进行中
  */
 int colorlut_flush_to_lcd_async(const uint8_t *src,
@@ -426,10 +428,10 @@ int colorlut_flush_to_lcd_async(const uint8_t *src,
         // 发送数据模式
         lcdio_write_mode(WRITE_DATA);
 
-        // 加载 line0 到 ping 缓冲并启动传输
+        // 加载 line0 到 ping 缓冲并启动传输（按缓冲内局部坐标读）
         for (size_t x = 0; x < tmp_width; x++)
         {
-            uint8_t ci = colorlut_get_pixel(tmp_src, tmp_x_start + x, tmp_y_start);
+            uint8_t ci = colorlut_get_pixel(tmp_src, x, 0);
             uint16_t c = colorlut_get_color(ci);
             spi_buf_ping[x] = (uint16_t)((c >> 8) | (c << 8)); // 高低字节交换
         }
@@ -440,14 +442,14 @@ int colorlut_flush_to_lcd_async(const uint8_t *src,
     }
     else if (state == 2)
     {
-        // 加载下一行到另一缓冲（DMA 正在发送 tx_buf_index 指向的缓冲）
+        // 加载下一行到另一缓冲（DMA 正在发送 tx_buf_index 指向的缓冲；按缓冲内局部坐标读）
         int next_row = line_cplt + 1;
         if (next_row < (int)tmp_height)
         {
             uint16_t *load_buf = (tx_buf_index == false) ? spi_buf_pong : spi_buf_ping;   // 加载到非发送缓冲
             for (size_t x = 0; x < tmp_width; x++)
             {
-                uint8_t ci = colorlut_get_pixel(tmp_src, tmp_x_start + x, tmp_y_start + next_row);
+                uint8_t ci = colorlut_get_pixel(tmp_src, x, next_row);
                 uint16_t c = colorlut_get_color(ci);
                 load_buf[x] = (uint16_t)((c >> 8) | (c << 8)); // 高低字节交换
             }

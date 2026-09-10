@@ -2,8 +2,10 @@
  * @file colorlut.h
  * @brief ColorLUT 图形显示驱动库接口说明
  *
- * 本库提供基于调色板索引的图形显示接口，支持 16 色或 256 色模式，
- * 通过 DMA 批传输刷新到 LCD，适合在嵌入式系统中实现高效的 GUI。
+ * 本库提供基于调色板索引的图形显示接口，通过 DMA 批传输刷新到 LCD，
+ * 适合在嵌入式系统中实现高效的 GUI。
+ * 调色板大小默认 16 色（4bit 打包，已实测）；256 色模式可通过宏切换
+ * （8bit 逐像素），当前未验证。
  *
  * 使用步骤：
  * 1. 调用 `colorlut_init` 初始化调色板颜色。
@@ -13,9 +15,10 @@
  * 4. 调用 `colorlut_flush_to_lcd` 将缓冲区内容刷新到 LCD 显示。
  *
  * 注意事项：
- * - 通过宏 `COLORLUT_MAX_COLORS` 选择调色板大小 (16 或 256)。
+ * - 通过宏 `COLORLUT_MAX_COLORS` 选择调色板大小 (16 或 256)；
+ *   16 色（默认，4bit 打包）已实测，256 色分支尚未验证。
  * - 在 16 色模式下，每字节存储两个像素索引；在 256 色模式下，每字节存储一个像素索引。
- * - 刷新采用行扫描（逐行）方式，数据序与 LCD 地址递增方向一致。
+ * - 刷新采用行扫描（逐行）方式，数据序与 LCD 地址递增方向一致（列扫描已移除）。
  * - 使用前需确保 LCD 已初始化，且 DMA 批传输可用。
  * - 本库仅提供基于索引的绘制接口，实际颜色由调色板映射到 RGB565。
  *
@@ -43,21 +46,20 @@
 extern "C" {
 #endif
 
-// 默认最大调色板大小（可根据需求改为 16 或 256）
+// 最大调色板大小：16(4bit打包，已实测) 或 256(8bit逐像素，未验证)
 #define COLORLUT_MAX_COLORS 16
 
-// 处理的区域宽度
+// 区域缓冲宽度：既作为索引缓冲的行距（stride，set/get_pixel 用它寻址），
+// 也决定 DMA 行缓冲大小；使用非全屏缓冲时须改为该缓冲的实际宽度。
 #define COLORLUT_AREA_WIDTH LCD_W
-// 处理的区域长度
+// 区域缓冲长度（当前代码未用，仅作尺寸约定参考）
 #define COLORLUT_AREA_HEIGHT LCD_H
-
-extern volatile uint8_t transmit_cplt;
 
 /**
  * @brief 初始化调色板
  *
  * @param colors RGB565颜色数组
- * @param count  调色板颜色数量 (最大16或256)
+ * @param count  调色板颜色数量 (最大16或256；16 已实测，256 未验证)
  */
 void colorlut_init(const uint16_t *colors, size_t count);
 
@@ -156,13 +158,17 @@ void colorlut_show_char(uint8_t *buf, uint16_t x, uint16_t y, uint8_t character,
 void colorlut_show_string(uint8_t *buf, uint16_t x, uint16_t y, const uint8_t *str, uint8_t color_index, uint8_t font_size);
 
 /**
- * @brief 将索引缓冲区内容刷新到LCD显示器
+ * @brief 将索引缓冲区内容刷新到LCD显示器（自包含缓冲，可非全屏）
  *
- * @param src     索引缓冲区指针（对应刷新区域的索引数据，原点为0,0）
- * @param x_start 刷新区域在屏幕的起始X坐标
- * @param y_start 刷新区域在屏幕的起始Y坐标
- * @param width   刷新区域的宽度（像素数）
- * @param height  刷新区域的高度（像素数）
+ * 缓冲区采用自身局部坐标（原点为缓冲左上角，行距 = COLORLUT_AREA_WIDTH），
+ * x_start/y_start 仅表示该区域贴在屏幕上的目标位置，不参与缓冲寻址；
+ * 因此缓冲可为任意局部区域，宽度无须等于屏宽。
+ *
+ * @param src     索引缓冲区指针（内容按缓冲局部坐标绘制，原点为缓冲左上角）
+ * @param x_start 该区域在屏幕上的目标起始X坐标
+ * @param y_start 该区域在屏幕上的目标起始Y坐标
+ * @param width   该区域的宽度（像素数，<= COLORLUT_AREA_WIDTH）
+ * @param height  该区域的高度（像素数）
  */
 void colorlut_flush_to_lcd(const uint8_t *src, size_t x_start, size_t y_start, size_t width, size_t height);
 
@@ -171,13 +177,14 @@ void colorlut_flush_to_lcd(const uint8_t *src, size_t x_start, size_t y_start, s
  *
  * 每次调用推进一次状态机：返回 0 表示空闲（本次入参作为新帧开始刷屏），
  * 返回非 0 表示刷屏进行中（本次入参被忽略，仅推进当前帧）。
- * 适用于主循环周期驱动，避免长时间阻塞。
+ * 适用于主循环周期驱动，避免长时间阻塞。语义与阻塞版相同：自包含缓冲、
+ * 局部坐标、x_start/y_start 为屏幕目标位。
  *
- * @param src     索引缓冲区指针（对应刷新区域的索引数据，原点为0,0）
- * @param x_start 刷新区域在屏幕的起始X坐标
- * @param y_start 刷新区域在屏幕的起始Y坐标
- * @param width   刷新区域的宽度（像素数）
- * @param height  刷新区域的高度（像素数）
+ * @param src     索引缓冲区指针（内容按缓冲局部坐标绘制，原点为缓冲左上角）
+ * @param x_start 该区域在屏幕上的目标起始X坐标
+ * @param y_start 该区域在屏幕上的目标起始Y坐标
+ * @param width   该区域的宽度（像素数，<= COLORLUT_AREA_WIDTH）
+ * @param height  该区域的高度（像素数）
  * @retval 0=空闲可接收新帧；非0=刷屏进行中
  */
 int colorlut_flush_to_lcd_async(const uint8_t *src, size_t x_start, size_t y_start, size_t width, size_t height);
