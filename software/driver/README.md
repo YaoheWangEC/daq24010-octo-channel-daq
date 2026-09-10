@@ -72,7 +72,7 @@ finally:
 - 模式：`software` / `level+` / `level-` / `slope+` / `slope-`（`TRIGGER_MODES`）。
 - `set_trigger(mode, threshold)` 的 `threshold` 为**电压 V**；`level±` 为电平、`slope±` 为相邻样本差值幅度。
 - 判定基于降采样后的输出样本（2 点窗口）。
-- `level±` / `slope±` 属硬件触发，设备侧尚未上板实测。
+- `level±` / `slope±` 属硬件触发，已上板实测。
 - 固件无触发超时；等待触发时 `stream_read` 返回空数组，`capture` 需给足 `timeout`。
 
 ## 电压换算与校正
