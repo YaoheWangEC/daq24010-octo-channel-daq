@@ -51,6 +51,11 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Python
+__pycache__/
+*.py[cod]
+.idea/
+
 # Keil MDK-ARM
 objects/
 listings/
